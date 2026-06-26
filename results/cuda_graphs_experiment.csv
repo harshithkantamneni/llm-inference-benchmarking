@@ -1,0 +1,4 @@
+rate,tpot_graphs_on_ms,tpot_eager_ms,gap_ms,gap_pct
+4,6.20,9.37,3.17,51
+8,6.39,9.27,2.88,45
+32,7.66,11.30,3.64,48
