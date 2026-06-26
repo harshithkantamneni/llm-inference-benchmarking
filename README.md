@@ -138,3 +138,7 @@ same H100 with the identical protocol. Details: [`results/trtllm_install_notes.m
 | Serving engine | vLLM 0.23.0 |
 | Benchmark tool | `vllm bench serve` (OpenAI-compatible endpoint) |
 | Metrics | p99 TTFT, p99 TPOT, throughput (req/s and output tok/s) |
+
+## License
+
+Released under the [MIT License](LICENSE).
