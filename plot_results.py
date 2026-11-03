@@ -89,7 +89,7 @@ def plot_sweep_latency(df):
     axA.set_title("Time-to-first-token cliffs at saturation")
     lo, hi = df["p99_ttft_ms"].iloc[0], df["p99_ttft_ms"].iloc[-1]
     axA.annotate(
-        f"~{lo:.0f} ms  ->  {hi:,.0f} ms\n(~{hi / lo:.0f}x)",
+        f"~{lo:.0f} ms  ->  {hi:,.0f} ms\n(unbounded burst)",
         xy=(xt.iloc[-1], hi), xytext=(xt.iloc[1], hi * 0.35),
         fontsize=9, color="#333",
         arrowprops=dict(arrowstyle="->", color="#666"),
@@ -97,7 +97,7 @@ def plot_sweep_latency(df):
 
     axB.plot(xt, df["p99_tpot_ms"], marker="o", color=C_PRIMARY, lw=2)
     axB.set_xlabel("Achieved throughput (output tok/s)")
-    axB.set_ylabel("p99 TPOT (ms)")
+    axB.set_ylabel("TPOT (ms)")
     axB.set_title("Time-per-output-token degrades gently")
     lo2, hi2 = df["p99_tpot_ms"].iloc[0], df["p99_tpot_ms"].iloc[-1]
     axB.annotate(
@@ -124,12 +124,13 @@ def plot_cuda_graphs(df):
            color=C_PRIMARY, label="CUDA graphs on (default)")
     ax.set_xticks(list(x))
     ax.set_xticklabels([f"{int(r)} req/s" for r in df["rate"]])
-    ax.set_ylabel("p99 TPOT (ms)")
+    ax.set_ylabel("TPOT (ms)")
     ax.set_title("CUDA graphs amortize per-step launch overhead")
     ax.legend(frameon=False)
     for i, (_, row) in enumerate(df.iterrows()):
         ax.text(i, max(row["tpot_eager_ms"], row["tpot_graphs_on_ms"]) + 0.25,
-                f"-{int(row['gap_pct'])}%", ha="center", fontsize=9, color="#333")
+                f"-{100 * (row['tpot_eager_ms'] - row['tpot_graphs_on_ms']) / row['tpot_eager_ms']:.0f}%",
+                ha="center", fontsize=9, color="#333")
     fig.tight_layout()
     out = PLOTS / "cuda_graphs_tpot.png"
     fig.savefig(out)
@@ -148,7 +149,7 @@ def plot_fp8_vs_fp16(df):
     axA.set_xticks(list(x))
     axA.set_xticklabels(labels)
     axA.set_xlabel("Offered request rate (req/s)")
-    axA.set_ylabel("p99 TPOT (ms)")
+    axA.set_ylabel("TPOT (ms)")
     axA.set_title("Decode latency: FP8 vs FP16")
     axA.legend(frameon=False)
 

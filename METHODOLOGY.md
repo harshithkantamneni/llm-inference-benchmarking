@@ -4,7 +4,7 @@ All benchmarks run on a single NVIDIA H100 NVL (94GB), serving Qwen2.5-7B-Instru
 
 ## Principles
 - Controlled comparison: only one variable changes per experiment; model, precision, dataset, and lengths are held constant otherwise.
-- Percentile reporting (p99), not means, since tail latency is the real serving constraint.
+- Percentile reporting (p99 TTFT), not means, since tail latency is the real serving constraint.
 - Fixed output length via `--ignore-eos` for clean, comparable measurements.
 - Poisson request arrival (the tool's default) to model realistic load.
 
@@ -18,7 +18,7 @@ Swept request rate from light load to saturation — 4, 8, 16, 32, and 64 req/s 
 Compared default (graphs on) vs `--enforce-eager` (graphs off) at low-to-moderate rates, where per-step launch overhead is a larger fraction of step time.
 
 ## Quantization experiment
-Benchmarked FP8 vs FP16 on the identical protocol, measuring both performance (throughput, p99 TPOT) and output quality (coherence on real prompts), to validate quantization helped end-to-end, not just in microbenchmarks.
+Benchmarked FP8 vs FP16 on the identical protocol, measuring both performance (throughput, TPOT) and output quality (coherence on real prompts), to validate quantization helped end-to-end, not just in microbenchmarks.
 
 ## Profiling
 Captured torch-profiler traces during a small request burst (`--profile`) to inspect the per-token kernel launch pattern and confirm decode is dominated by memory-bound projection matmuls.
