@@ -125,7 +125,7 @@ def plot_cuda_graphs(df):
     ax.set_xticks(list(x))
     ax.set_xticklabels([f"{int(r)} req/s" for r in df["rate"]])
     ax.set_ylabel("TPOT (ms)")
-    ax.set_title("CUDA graphs amortize per-step launch overhead")
+    ax.set_title("CUDA graphs: TPOT 31-34% lower than eager")
     ax.legend(frameon=False)
     for i, (_, row) in enumerate(df.iterrows()):
         ax.text(i, max(row["tpot_eager_ms"], row["tpot_graphs_on_ms"]) + 0.25,
