@@ -18,7 +18,7 @@ Swept request rate from light load to saturation — 4, 8, 16, 32, and 64 req/s 
 Compared default (graphs on) vs `--enforce-eager` (graphs off) at low-to-moderate rates, where per-step launch overhead is a larger fraction of step time.
 
 ## Quantization experiment
-Benchmarked FP8 vs FP16 on the identical protocol, measuring both performance (throughput, TPOT) and output quality (coherence on real prompts), to validate quantization helped end-to-end, not just in microbenchmarks.
+Benchmarked FP8 vs FP16 on the identical protocol, measuring throughput and TPOT, and checked output coherence on real prompts. Accuracy evaluation is outside the scope of this benchmark.
 
 ## Profiling
 Captured torch-profiler traces during a small request burst (`--profile`) to inspect the per-token kernel launch pattern and confirm decode is dominated by memory-bound projection matmuls.
