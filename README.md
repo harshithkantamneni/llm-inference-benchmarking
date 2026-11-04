@@ -37,14 +37,14 @@ CUDA graphs remove about 3 ms per token, a consistent **31-34%** TPOT reduction.
 
 ![TPOT: CUDA graphs on vs eager](plots/cuda_graphs_tpot.png)
 
-### 3. FP8 gives 27-36% lower TPOT and ~25% higher peak throughput, quality preserved
+### 3. FP8 gives 27-36% lower TPOT and ~25% higher peak throughput
 
 Running FP8 (`RedHatAI/Qwen2.5-7B-Instruct-FP8-dynamic`) against FP16 on the identical protocol:
 
 - **Decode latency:** FP8 has **27-36% lower** TPOT across the sweep (e.g. offline: 14.06 → 9.31 ms).
 - **Peak throughput:** FP8 reaches **8,810 tok/s** offline vs FP16's **7,028 tok/s** — about **+25%**.
-- **Quality:** preserved on real-prompt coherence checks (see [METHODOLOGY](METHODOLOGY.md)), so the
-  speedup is end-to-end, not just a microbenchmark win.
+- **Scope:** this compares latency and throughput. FP8 output was checked for coherence on real
+  prompts (see [METHODOLOGY](METHODOLOGY.md)). Accuracy evaluation is outside this benchmark.
 
 The speedup lands well below the ~2× you might expect from FP8 matmul alone. Assuming a 2× matmul speedup, Amdahl's law gives a matmul fraction of 54-72% from TPOT and 40% from peak throughput. No single fraction fits, so one Amdahl term doesn't explain this data. The decode step wasn't profiled, so where the rest of the time goes isn't measured here.
 
